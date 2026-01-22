@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Calculadora Master Simplificada</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f26b2b",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .input-error {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased min-h-screen flex flex-col">
+    <header
+        class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 py-4 sticky top-0 z-50 shadow-sm">
+        <div class="flex items-center gap-3 text-slate-900 dark:text-white">
+            <div class="flex items-center">
+                <img src="logo master  150x40.png" alt="Master Logo" class="h-12 w-auto object-contain" />
+            </div>
+            <div class="h-6 w-px bg-slate-300 dark:bg-slate-700 mx-2"></div>
+            <h2 class="text-lg font-medium text-slate-600 dark:text-slate-300">Calculadora</h2>
+        </div>
+        <button id="resetAllBtn"
+            class="flex min-w-[60px] sm:min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 sm:h-10 px-2 sm:px-4 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs sm:text-sm font-bold leading-normal transition-colors duration-200 gap-1 sm:gap-2">
+            <span class="material-symbols-outlined !text-[16px] sm:!text-[18px]">restart_alt</span>
+            <span class="truncate hidden sm:inline">Atualizar</span>
+        </button>
+    </header>
+
+    <!-- Mobile/Tablet Dropdown Selector -->
+    <div class="lg:hidden px-4 py-4 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+        <label for="calcSelector" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+            Selecione o cálculo:
+        </label>
+        <select id="calcSelector"
+            class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:border-primary focus:ring-primary h-10 px-3">
+            <option value="adicao" selected>Cálculo de Adição</option>
+            <option value="perto">Cálculo de Perto</option>
+            <option value="longe">Cálculo de Longe</option>
+        </select>
+    </div>
+
+    <main class="flex-1 p-4 lg:p-8 overflow-y-auto">
+        <div class="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Cálculo de Adição -->
+            <div id="calc-adicao"
+                class="calc-block hidden lg:flex flex-col bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+                <div class="px-6 py-5 border-b border-slate-100 dark:border-slate-800 flex items-center gap-3">
+                    <span class="bg-primary/10 text-primary p-2 rounded-lg material-symbols-outlined">add_circle</span>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Cálculo de Adição</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs font-medium mt-0.5">Longe + Perto = Adição
+                        </p>
+                    </div>
+                </div>
+                <div class="p-6 flex flex-col gap-6 flex-1">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 dark:text-slate-200 mb-3 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-base text-primary">distance</span>
+                            Longe
+                        </h4>
+                        <div class="grid grid-cols-1 gap-3">
+                            <label class="flex flex-col">
+                                <span class="text-xs font-medium text-slate-500 mb-1.5 ml-1">Esférico</span>
+                                <input id="addLongeInput"
+                                    class="form-input w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:border-primary focus:ring-primary h-10"
+                                    placeholder="0,00" type="text" inputmode="decimal" />
+                                <div id="addLongeError" class="error-message text-red-500 text-xs mt-1 hidden">Valor
+                                    inválido</div>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 dark:text-slate-200 mb-3 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-base text-primary">menu_book</span>
+                            Perto
+                        </h4>
+                        <div class="grid grid-cols-1 gap-3">
+                            <label class="flex flex-col">
+                                <span class="text-xs font-medium text-slate-500 mb-1.5 ml-1">Esférico</span>
+                                <input id="addPertoInput"
+                                    class="form-input w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:border-primary focus:ring-primary h-10"
+                                    placeholder="0,00" type="text" inputmode="decimal" />
+                                <div id="addPertoError" class="error-message text-red-500 text-xs mt-1 hidden">Valor
+                                    inválido</div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mt-auto pt-4">
+                        <button id="calcAddBtn"
+                            class="w-full bg-primary hover:bg-[#d9581f] text-white font-bold py-3 rounded-lg shadow-sm transition-colors flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined">calculate</span>
+                            Calcular Adição
+                        </button>
+                        <div
+                            class="mt-4 p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20 flex flex-col items-center justify-center text-center h-24">
+                            <span
+                                class="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-widest font-semibold mb-1">Resultado</span>
+                            <div id="addResult" class="text-3xl font-bold text-primary">
+                                ADD 0,00
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Cálculo de Perto -->
+            <div id="calc-perto"
+                class="calc-block hidden lg:flex flex-col bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+                <div class="px-6 py-5 border-b border-slate-100 dark:border-slate-800 flex items-center gap-3">
+                    <span class="bg-primary/10 text-primary p-2 rounded-lg material-symbols-outlined">menu_book</span>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Cálculo de Perto</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs font-medium mt-0.5">Longe + Adição = Perto
+                        </p>
+                    </div>
+                </div>
+                <div class="p-6 flex flex-col gap-6 flex-1">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 dark:text-slate-200 mb-3 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-base text-primary">distance</span>
+                            Longe
+                        </h4>
+                        <div class="grid grid-cols-1 gap-3">
+                            <label class="flex flex-col">
+                                <span class="text-xs font-medium text-slate-500 mb-1.5 ml-1">Esférico</span>
+                                <input id="nearLongeInput"
+                                    class="form-input w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:border-primary focus:ring-primary h-10"
+                                    placeholder="0,00" type="text" inputmode="decimal" />
+                                <div id="nearLongeError" class="error-message text-red-500 text-xs mt-1 hidden">Valor
+                                    inválido</div>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 dark:text-slate-200 mb-3 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-base text-primary">add_circle</span>
+                            Adição
+                        </h4>
+                        <div class="grid grid-cols-1">
+                            <label class="flex flex-col">
+                                <span class="text-xs font-medium text-slate-500 mb-1.5 ml-1">Valor da Adição</span>
+                                <input id="nearAddInput"
+                                    class="form-input w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:border-primary focus:ring-primary h-10"
+                                    placeholder="0,00" type="text" inputmode="decimal" />
+                                <div id="nearAddError" class="error-message text-red-500 text-xs mt-1 hidden">Valor
+                                    inválido</div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mt-auto pt-4">
+                        <button id="calcNearBtn"
+                            class="w-full bg-primary hover:bg-[#d9581f] text-white font-bold py-3 rounded-lg shadow-sm transition-colors flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined">calculate</span>
+                            Calcular Perto
+                        </button>
+                        <div
+                            class="mt-4 p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20 flex flex-col items-center justify-center text-center h-24">
+                            <span
+                                class="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-widest font-semibold mb-1">Resultado
+                                (Rx Perto)</span>
+                            <div id="nearResult" class="text-3xl font-bold text-primary">
+                                0,00
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Cálculo de Longe -->
+            <div id="calc-longe"
+                class="calc-block hidden lg:flex flex-col bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+                <div class="px-6 py-5 border-b border-slate-100 dark:border-slate-800 flex items-center gap-3">
+                    <span class="bg-primary/10 text-primary p-2 rounded-lg material-symbols-outlined">distance</span>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Cálculo de Longe</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs font-medium mt-0.5">Perto - Adição = Longe
+                        </p>
+                    </div>
+                </div>
+                <div class="p-6 flex flex-col gap-6 flex-1">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 dark:text-slate-200 mb-3 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-base text-primary">menu_book</span>
+                            Perto
+                        </h4>
+                        <div class="grid grid-cols-1 gap-3">
+                            <label class="flex flex-col">
+                                <span class="text-xs font-medium text-slate-500 mb-1.5 ml-1">Esférico</span>
+                                <input id="farPertoInput"
+                                    class="form-input w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:border-primary focus:ring-primary h-10"
+                                    placeholder="0,00" type="text" inputmode="decimal" />
+                                <div id="farPertoError" class="error-message text-red-500 text-xs mt-1 hidden">Valor
+                                    inválido</div>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 dark:text-slate-200 mb-3 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-base text-primary">add_circle</span>
+                            Adição
+                        </h4>
+                        <div class="grid grid-cols-1">
+                            <label class="flex flex-col">
+                                <span class="text-xs font-medium text-slate-500 mb-1.5 ml-1">Valor da Adição</span>
+                                <input id="farAddInput"
+                                    class="form-input w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:border-primary focus:ring-primary h-10"
+                                    placeholder="0,00" type="text" inputmode="decimal" />
+                                <div id="farAddError" class="error-message text-red-500 text-xs mt-1 hidden">Valor
+                                    inválido</div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mt-auto pt-4">
+                        <button id="calcFarBtn"
+                            class="w-full bg-primary hover:bg-[#d9581f] text-white font-bold py-3 rounded-lg shadow-sm transition-colors flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined">calculate</span>
+                            Calcular Longe
+                        </button>
+                        <div
+                            class="mt-4 p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20 flex flex-col items-center justify-center text-center h-24">
+                            <span
+                                class="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-widest font-semibold mb-1">Resultado
+                                (Rx Longe)</span>
+                            <div id="farResult" class="text-3xl font-bold text-primary">
+                                0,00
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manual de Cálculo Section -->
+        <section class="mt-12 max-w-[1400px] mx-auto px-4 lg:px-8" aria-labelledby="manual-calculo">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="bg-primary/10 text-primary p-2 rounded-lg material-symbols-outlined"
+                    aria-hidden="true">menu_book</span>
+                <h2 id="manual-calculo" class="text-2xl font-bold text-slate-900 dark:text-white">Manual de Cálculo</h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Manual Block 1: Cálculo da Adição -->
+                <div id="manual-adicao"
+                    class="manual-block hidden lg:block bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
+                    <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+                        <h3 class="font-bold text-lg text-slate-900 dark:text-white">Cálculo da Adição</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm">Entradas: Longe e Perto</p>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <!-- Manual Técnico -->
+                        <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                            <h4 class="font-semibold flex items-center gap-2 mb-2 text-slate-900 dark:text-white">
+                                <span aria-hidden="true">📘</span> Manual Técnico
+                            </h4>
+                            <p class="text-sm text-slate-600 dark:text-slate-300 mb-3">
+                                A adição corresponde à diferença entre a dioptria do esférico para perto e para
+                                longe, sendo a principal característica da presbiopia. <strong>Nota: A adição é sempre
+                                    considerada um valor positivo na prescrição.</strong>
+                            </p>
+                            <div
+                                class="bg-white dark:bg-slate-900 p-3 rounded border border-slate-200 dark:border-slate-700">
+                                <p class="font-mono text-sm text-slate-800 dark:text-slate-200">Adição = Perto − Longe
+                                </p>
+                            </div>
+                            <p class="text-sm font-medium text-slate-700 dark:text-slate-300 mt-3">Exemplo prático:</p>
+                            <p class="text-sm text-slate-600 dark:text-slate-300">Longe: −2,00, Perto: +0,50<br>
+                                ↓<br>Adição =
+                                +0,50 − (−2,00) = +2,50</p>
+                        </div>
+                        <!-- Fórmula -->
+                        <div class="p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20">
+                            <h4 class="font-semibold flex items-center gap-2 mb-2 text-slate-900 dark:text-white">
+                                <span aria-hidden="true">ℹ️</span> Fórmula
+                            </h4>
+                            <p class="text-sm text-slate-600 dark:text-slate-300">
+                                Calcula a adição subtraindo a dioptria de longe da dioptria de perto. Ex.: Perto +0,50 e
+                                Longe −2,00<br>↓<br>Adição +2,50
+                            </p>
+                        </div>
+                        <!-- Tela de Onboarding (sem título) -->
+                        <div
+                            class="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                            <p class="text-sm text-slate-600 dark:text-slate-300">
+                                Informe a dioptria de longe e a de perto para obter automaticamente o valor da adição,
+                                calculado pela diferença entre os dois valores.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Manual Block 2: Cálculo da Dioptria de Perto -->
+                <div id="manual-perto"
+                    class="manual-block hidden lg:block bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
+                    <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+                        <h3 class="font-bold text-lg text-slate-900 dark:text-white">Cálculo da Dioptria de Perto</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm">Entradas: Longe e Adição</p>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <!-- Manual Técnico -->
+                        <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                            <h4 class="font-semibold flex items-center gap-2 mb-2 text-slate-900 dark:text-white">
+                                <span aria-hidden="true">📘</span> Manual Técnico
+                            </h4>
+                            <p class="text-sm text-slate-600 dark:text-slate-300 mb-3">
+                                A dioptria de perto é obtida pela soma da refração de longe com o valor da adição
+                                prescrita. <strong>Nota: considerar sempre a adição como valor positivo.</strong>
+                            </p>
+                            <div
+                                class="bg-white dark:bg-slate-900 p-3 rounded border border-slate-200 dark:border-slate-700">
+                                <p class="font-mono text-sm text-slate-800 dark:text-slate-200">Perto = Longe + Adição
+                                </p>
+                            </div>
+                            <p class="text-sm font-medium text-slate-700 dark:text-slate-300 mt-3">Exemplo prático:</p>
+                            <p class="text-sm text-slate-600 dark:text-slate-300">Longe: −1,50, Adição: +2,00<br>
+                                ↓<br>Perto
+                                =
+                                −1,50 + 2,00 = +0,50</p>
+                        </div>
+                        <!-- Fórmula -->
+                        <div class="p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20">
+                            <h4 class="font-semibold flex items-center gap-2 mb-2 text-slate-900 dark:text-white">
+                                <span aria-hidden="true">ℹ️</span> Fórmula
+                            </h4>
+                            <p class="text-sm text-slate-600 dark:text-slate-300">
+                                Soma a dioptria de longe com a adição para encontrar a dioptria de perto. Ex.: −1,50 +
+                                2,00<br>↓<br>+0,50
+                            </p>
+                        </div>
+                        <!-- Tela de Onboarding (sem título) -->
+                        <div
+                            class="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                            <p class="text-sm text-slate-600 dark:text-slate-300">
+                                Utilize este cálculo quando a receita informar longe e adição separadamente. A
+                                calculadora
+                                retorna a dioptria correta para visão de perto.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Manual Block 3: Cálculo da Dioptria de Longe -->
+                <div id="manual-longe"
+                    class="manual-block hidden lg:block bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
+                    <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+                        <h3 class="font-bold text-lg text-slate-900 dark:text-white">Cálculo da Dioptria de Longe</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm">Entradas: Perto e Adição</p>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <!-- Manual Técnico -->
+                        <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                            <h4 class="font-semibold flex items-center gap-2 mb-2 text-slate-900 dark:text-white">
+                                <span aria-hidden="true">📘</span> Manual Técnico
+                            </h4>
+                            <p class="text-sm text-slate-600 dark:text-slate-300 mb-3">
+                                A dioptria de longe pode ser determinada subtraindo o valor da adição da refração de
+                                perto. <strong>Nota: considerar sempre a adição como valor positivo.</strong>
+                            </p>
+                            <div
+                                class="bg-white dark:bg-slate-900 p-3 rounded border border-slate-200 dark:border-slate-700">
+                                <p class="font-mono text-sm text-slate-800 dark:text-slate-200">Longe = Perto − Adição
+                                </p>
+                            </div>
+                            <p class="text-sm font-medium text-slate-700 dark:text-slate-300 mt-3">Exemplo prático:</p>
+                            <p class="text-sm text-slate-600 dark:text-slate-300">Perto: +1,00, Adição: +2,50<br>
+                                ↓<br>Longe
+                                =
+                                +1,00 − 2,50 = −1,50</p>
+                        </div>
+                        <!-- Fórmula -->
+                        <div class="p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20">
+                            <h4 class="font-semibold flex items-center gap-2 mb-2 text-slate-900 dark:text-white">
+                                <span aria-hidden="true">ℹ️</span> Fórmula
+                            </h4>
+                            <p class="text-sm text-slate-600 dark:text-slate-300">
+                                Subtraia a adição da dioptria de perto para obter a dioptria de longe. Ex.: +1,00 − 2,50
+                                <br>↓<br>−1,50
+                            </p>
+                        </div>
+                        <!-- Tela de Onboarding (sem título) -->
+                        <div
+                            class="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                            <p class="text-sm text-slate-600 dark:text-slate-300">
+                                Este cálculo é indicado quando a prescrição apresenta apenas a refração para perto e o
+                                valor da adição.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="p-6 text-center text-slate-800 dark:text-slate-300 text-xs mt-auto">
+        <p>© 2026 Calculadora Master. Desenvolvida para Profissionais de Óptica.</p>
+    </footer>
+
+    <script>
+        // Get DOM elements
+        const addLongeInput = document.getElementById('addLongeInput');
+        const addPertoInput = document.getElementById('addPertoInput');
+        const addResult = document.getElementById('addResult');
+        const calcAddBtn = document.getElementById('calcAddBtn');
+        const addLongeError = document.getElementById('addLongeError');
+        const addPertoError = document.getElementById('addPertoError');
+
+        const nearLongeInput = document.getElementById('nearLongeInput');
+        const nearAddInput = document.getElementById('nearAddInput');
+        const nearResult = document.getElementById('nearResult');
+        const calcNearBtn = document.getElementById('calcNearBtn');
+        const nearLongeError = document.getElementById('nearLongeError');
+        const nearAddError = document.getElementById('nearAddError');
+
+        const farPertoInput = document.getElementById('farPertoInput');
+        const farAddInput = document.getElementById('farAddInput');
+        const farResult = document.getElementById('farResult');
+        const calcFarBtn = document.getElementById('calcFarBtn');
+        const farPertoError = document.getElementById('farPertoError');
+        const farAddError = document.getElementById('farAddError');
+
+        const resetAllBtn = document.getElementById('resetAllBtn');
+
+        // Mobile/Tablet Dropdown Elements
+        const calcSelector = document.getElementById('calcSelector');
+        const calcBlocks = document.querySelectorAll('.calc-block');
+        const manualBlocks = document.querySelectorAll('.manual-block');
+
+        // Function to show/hide blocks based on dropdown selection
+        function handleCalcSelectorChange() {
+            const selectedValue = calcSelector.value;
+
+            // Hide all calculator blocks and manual sections on mobile/tablet
+            calcBlocks.forEach(block => {
+                block.classList.remove('flex');
+                block.classList.add('hidden');
+            });
+            manualBlocks.forEach(block => {
+                block.classList.remove('block');
+                block.classList.add('hidden');
+            });
+
+            // Show only the selected calculator block and its corresponding manual section
+            if (selectedValue) {
+                const calcBlock = document.getElementById(`calc-${selectedValue}`);
+                const manualBlock = document.getElementById(`manual-${selectedValue}`);
+
+                if (calcBlock) {
+                    calcBlock.classList.remove('hidden');
+                    calcBlock.classList.add('flex');
+                }
+                if (manualBlock) {
+                    manualBlock.classList.remove('hidden');
+                    manualBlock.classList.add('block');
+                }
+            }
+        }
+
+        // Add event listener for dropdown change
+        calcSelector.addEventListener('change', handleCalcSelectorChange);
+
+        // Initialize: Show "Cálculo de Adição" by default on mobile/tablet
+        handleCalcSelectorChange();
+
+        // Parse input accepting both comma and dot as decimal separator
+        function parseInput(value) {
+            if (!value || value.trim() === '') return null;
+
+            let normalized = value.replace(',', '.');
+
+            // If no decimal point, insert it before the last 2 digits
+            if (!normalized.includes('.')) {
+                if (normalized.length >= 2) {
+                    const intPart = normalized.slice(0, -2);
+                    const decPart = normalized.slice(-2);
+                    normalized = intPart + '.' + decPart;
+                } else if (normalized.length === 1) {
+                    normalized = '0.' + normalized.padStart(2, '0');
+                }
+            }
+
+            const num = parseFloat(normalized);
+            return isNaN(num) ? null : num;
+        }
+
+        // Check if value contains letters (a-z, A-Z)
+        function containsLetters(value) {
+            return /[a-zA-Z]/.test(value);
+        }
+
+        // Validate if value is a valid 0.25 increment
+        function isValidStep(value) {
+            const num = parseInput(value);
+            if (num === null) return false;
+            // Check if divisible by 0.25 by multiplying by 4 and checking if result is integer
+            return (Math.abs(num) * 4) % 1 === 0;
+        }
+
+        // Format number with comma separator and 2 decimal places
+        function formatNumberWithComma(num) {
+            return num.toFixed(2).replace('.', ',');
+        }
+
+        // Format number with proper sign
+        function formatNumber(num) {
+            if (num === 0) return '0,00';
+            const sign = num > 0 ? '+' : '';
+            return sign + formatNumberWithComma(num);
+        }
+
+        // Format addition result (always positive)
+        function formatAddition(num) {
+            if (num < 0) return 'ADD ' + formatNumberWithComma(Math.abs(num));
+            return 'ADD ' + formatNumberWithComma(num);
+        }
+
+        // Show error for an input field
+        function showError(input, errorElement) {
+            input.classList.add('input-error');
+            errorElement.classList.remove('hidden');
+        }
+
+        // Hide error for an input field
+        function hideError(input, errorElement) {
+            input.classList.remove('input-error');
+            errorElement.classList.add('hidden');
+        }
+
+        // Validate and format input on change
+        function validateAndFormatInput(input, errorElement) {
+            const value = input.value;
+
+            // If empty, hide error and return
+            if (!value || value.trim() === '') {
+                hideError(input, errorElement);
+                return null;
+            }
+
+            // Check if contains letters - show error immediately
+            if (containsLetters(value)) {
+                errorElement.textContent = 'Apenas números permitidos';
+                showError(input, errorElement);
+                return null;
+            }
+
+            // Check if valid 0.25 increment
+            if (!isValidStep(value)) {
+                errorElement.textContent = 'Valor inválido';
+                showError(input, errorElement);
+                return null;
+            } else {
+                hideError(input, errorElement);
+                return parseInput(value);
+            }
+        }
+
+        // Validate negative values in Adição inputs (Rule 1)
+        function validateAdicaoInput(input, errorElement) {
+            const value = input.value;
+
+            // If empty, hide error and return
+            if (!value || value.trim() === '') {
+                hideError(input, errorElement);
+                return null;
+            }
+
+            // Check if contains letters - show error immediately
+            if (containsLetters(value)) {
+                errorElement.textContent = 'Apenas números permitidos';
+                showError(input, errorElement);
+                return null;
+            }
+
+            // Check if value contains a negative sign - immediately reject
+            if (value.includes('-')) {
+                errorElement.textContent = 'Valor inválido';
+                showError(input, errorElement);
+                return null;
+            }
+
+            // Parse the value
+            const num = parseInput(value);
+
+            // If parsing failed, return null (other validation will handle it)
+            if (num === null) {
+                return null;
+            }
+
+            return num;
+        }
+
+        // Format input on blur (Rule 2: format single digit to X,00)
+        function formatInputOnBlur(input, errorElement) {
+            const value = input.value;
+
+            // If empty, just hide error
+            if (!value || value.trim() === '') {
+                hideError(input, errorElement);
+                return;
+            }
+
+            // Check if contains letters - show error immediately
+            if (containsLetters(value)) {
+                errorElement.textContent = 'Apenas números permitidos';
+                showError(input, errorElement);
+                return;
+            }
+
+            // Rule 1: For Adição inputs, validate for negative values
+            if (input === addLongeInput || input === addPertoInput) {
+                // Check if value contains a negative sign - immediately reject
+                if (value.includes('-')) {
+                    errorElement.textContent = 'Valor inválido';
+                    showError(input, errorElement);
+                    return;
+                }
+
+                const num = validateAdicaoInput(input, errorElement);
+                if (num === null) {
+                    return; // Validation failed, don't format
+                }
+                // Format the valid positive value
+                input.value = formatNumberWithComma(num);
+                return;
+            }
+
+            // Rule 2: If input is a single digit, format as X,00
+            const trimmedValue = value.trim();
+            if (/^\d$/.test(trimmedValue)) {
+                // Single digit (without sign)
+                const num = parseFloat(trimmedValue);
+                input.value = formatNumberWithComma(num);
+                hideError(input, errorElement);
+                return;
+            }
+
+            // Validate and format
+            if (isValidStep(value)) {
+                const num = parseInput(value);
+                input.value = formatNumberWithComma(num);
+                hideError(input, errorElement);
+            } else {
+                errorElement.textContent = 'Valor inválido';
+                showError(input, errorElement);
+            }
+        }
+
+        // Calculate Addition: Longe + Perto = Adição
+        function calculateAddition() {
+            const longe = validateAdicaoInput(addLongeInput, addLongeError);
+            const perto = validateAdicaoInput(addPertoInput, addPertoError);
+
+            if (longe === null || perto === null) {
+                return; // Don't calculate if inputs are invalid
+            }
+
+            const addition = longe + perto;
+            addResult.textContent = formatAddition(addition);
+        }
+
+        // Calculate Near: Longe + Adição = Perto
+        function calculateNear() {
+            const longe = validateAndFormatInput(nearLongeInput, nearLongeError);
+            const addition = validateAndFormatInput(nearAddInput, nearAddError);
+
+            if (longe === null || addition === null) {
+                return; // Don't calculate if inputs are invalid
+            }
+
+            // Addition value is always positive
+            const near = longe + Math.abs(addition);
+            nearResult.textContent = formatNumber(near);
+        }
+
+        // Calculate Far: Perto - Adição = Longe
+        function calculateFar() {
+            const perto = validateAndFormatInput(farPertoInput, farPertoError);
+            const addition = validateAndFormatInput(farAddInput, farAddError);
+
+            if (perto === null || addition === null) {
+                return; // Don't calculate if inputs are invalid
+            }
+
+            // Addition value is always positive
+            const far = perto - Math.abs(addition);
+            farResult.textContent = formatNumber(far);
+        }
+
+        // Reset all inputs and results
+        function resetAll() {
+            // Reset Addition calculator
+            addLongeInput.value = '';
+            addPertoInput.value = '';
+            addResult.textContent = 'ADD 0,00';
+            hideError(addLongeInput, addLongeError);
+            hideError(addPertoInput, addPertoError);
+
+            // Reset Near calculator
+            nearLongeInput.value = '';
+            nearAddInput.value = '';
+            nearResult.textContent = '0,00';
+            hideError(nearLongeInput, nearLongeError);
+            hideError(nearAddInput, nearAddError);
+
+            // Reset Far calculator
+            farPertoInput.value = '';
+            farAddInput.value = '';
+            farResult.textContent = '0,00';
+            hideError(farPertoInput, farPertoError);
+            hideError(farAddInput, farAddError);
+        }
+
+        // Add event listeners
+        calcAddBtn.addEventListener('click', calculateAddition);
+        calcNearBtn.addEventListener('click', calculateNear);
+        calcFarBtn.addEventListener('click', calculateFar);
+        resetAllBtn.addEventListener('click', resetAll);
+
+        // Add input validation listeners for real-time validation
+        const allInputs = [
+            { input: addLongeInput, error: addLongeError },
+            { input: addPertoInput, error: addPertoError },
+            { input: nearLongeInput, error: nearLongeError },
+            { input: nearAddInput, error: nearAddError },
+            { input: farPertoInput, error: farPertoError },
+            { input: farAddInput, error: farAddError }
+        ];
+
+        allInputs.forEach(({ input, error }) => {
+            // Format on blur
+            input.addEventListener('blur', () => {
+                formatInputOnBlur(input, error);
+            });
+
+            // Check for letters in real-time on input (for all inputs)
+            input.addEventListener('input', () => {
+                const value = input.value;
+
+                // If empty, hide error and return
+                if (!value || value.trim() === '') {
+                    if (error.textContent === 'Apenas números permitidos' ||
+                        error.textContent === 'Valor inválido, adição tem valor positivo') {
+                        hideError(input, error);
+                        error.textContent = 'Valor inválido';
+                    }
+                    return;
+                }
+
+                // Check if value contains letters - immediately reject
+                if (containsLetters(value)) {
+                    error.textContent = 'Apenas números permitidos';
+                    showError(input, error);
+                } else if (error.textContent === 'Apenas números permitidos') {
+                    // If no letters and error is the letters error, hide it
+                    hideError(input, error);
+                    error.textContent = 'Valor inválido';
+                }
+
+                // Rule 1: Check for negative value in Adição inputs on input
+                if (input === addLongeInput || input === addPertoInput) {
+                    // Check if value contains a negative sign - immediately reject
+                    if (value.includes('-')) {
+                        error.textContent = 'Valor inválido, adição tem valor positivo';
+                        showError(input, error);
+                    } else if (error.textContent === 'Valor inválido, adição tem valor positivo') {
+                        // If no negative sign and error is the Adição error, hide it
+                        hideError(input, error);
+                        error.textContent = 'Valor inválido';
+                    }
+                }
+            });
+
+            // Allow Enter key to trigger calculations
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    // Determine which calculation to trigger based on input
+                    if (input === addLongeInput || input === addPertoInput) {
+                        calculateAddition();
+                    } else if (input === nearLongeInput || input === nearAddInput) {
+                        calculateNear();
+                    } else if (input === farPertoInput || input === farAddInput) {
+                        calculateFar();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
