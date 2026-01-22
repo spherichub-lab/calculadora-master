@@ -1,0 +1,21 @@
+{
+    "name": "calculadora-master",
+    "version": "1.0.0",
+    "description": "Calculadora Master Simplificada - Optical Prescription Calculator",
+    "main": "index.html",
+    "scripts": {
+        "dev": "npx serve . -p 3000",
+        "start": "npx serve . -p 3000",
+        "build": "echo 'No build step needed for static HTML'"
+    },
+    "keywords": [
+        "calculator",
+        "optical",
+        "prescription"
+    ],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "serve": "^14.2.1"
+    }
+}
