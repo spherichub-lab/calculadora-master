@@ -133,7 +133,7 @@
                             <span
                                 class="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-widest font-semibold mb-1">Resultado</span>
                             <div id="addResult" class="text-3xl font-bold text-primary">
-                                ADD 0,00
+                                ADD +0,00
                             </div>
                         </div>
                     </div>
@@ -195,7 +195,7 @@
                                 class="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-widest font-semibold mb-1">Resultado
                                 (Rx Perto)</span>
                             <div id="nearResult" class="text-3xl font-bold text-primary">
-                                0,00
+                                +0,00
                             </div>
                         </div>
                     </div>
@@ -257,7 +257,7 @@
                                 class="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-widest font-semibold mb-1">Resultado
                                 (Rx Longe)</span>
                             <div id="farResult" class="text-3xl font-bold text-primary">
-                                0,00
+                                +0,00
                             </div>
                         </div>
                     </div>
@@ -535,15 +535,14 @@
 
         // Format number with proper sign
         function formatNumber(num) {
-            if (num === 0) return '0,00';
-            const sign = num > 0 ? '+' : '';
+            const sign = num >= 0 ? '+' : '';
             return sign + formatNumberWithComma(num);
         }
 
         // Format addition result (always positive)
         function formatAddition(num) {
-            if (num < 0) return 'ADD ' + formatNumberWithComma(Math.abs(num));
-            return 'ADD ' + formatNumberWithComma(num);
+            const absNum = Math.abs(num);
+            return 'ADD ' + formatNumber(absNum);
         }
 
         // Show error for an input field
@@ -586,40 +585,6 @@
             }
         }
 
-        // Validate negative values in Adição inputs (Rule 1)
-        function validateAdicaoInput(input, errorElement) {
-            const value = input.value;
-
-            // If empty, hide error and return
-            if (!value || value.trim() === '') {
-                hideError(input, errorElement);
-                return null;
-            }
-
-            // Check if contains letters - show error immediately
-            if (containsLetters(value)) {
-                errorElement.textContent = 'Apenas números permitidos';
-                showError(input, errorElement);
-                return null;
-            }
-
-            // Check if value contains a negative sign - immediately reject
-            if (value.includes('-')) {
-                errorElement.textContent = 'Valor inválido';
-                showError(input, errorElement);
-                return null;
-            }
-
-            // Parse the value
-            const num = parseInput(value);
-
-            // If parsing failed, return null (other validation will handle it)
-            if (num === null) {
-                return null;
-            }
-
-            return num;
-        }
 
         // Format input on blur (Rule 2: format single digit to X,00)
         function formatInputOnBlur(input, errorElement) {
@@ -638,24 +603,6 @@
                 return;
             }
 
-            // Rule 1: For Adição inputs, validate for negative values
-            if (input === addLongeInput || input === addPertoInput) {
-                // Check if value contains a negative sign - immediately reject
-                if (value.includes('-')) {
-                    errorElement.textContent = 'Valor inválido';
-                    showError(input, errorElement);
-                    return;
-                }
-
-                const num = validateAdicaoInput(input, errorElement);
-                if (num === null) {
-                    return; // Validation failed, don't format
-                }
-                // Format the valid positive value
-                input.value = formatNumberWithComma(num);
-                return;
-            }
-
             // Rule 2: If input is a single digit, format as X,00
             const trimmedValue = value.trim();
             if (/^\d$/.test(trimmedValue)) {
@@ -669,7 +616,7 @@
             // Validate and format
             if (isValidStep(value)) {
                 const num = parseInput(value);
-                input.value = formatNumberWithComma(num);
+                input.value = formatNumber(num);
                 hideError(input, errorElement);
             } else {
                 errorElement.textContent = 'Valor inválido';
@@ -677,16 +624,16 @@
             }
         }
 
-        // Calculate Addition: Longe + Perto = Adição
+        // Calculate Addition: Perto - Longe = Adição
         function calculateAddition() {
-            const longe = validateAdicaoInput(addLongeInput, addLongeError);
-            const perto = validateAdicaoInput(addPertoInput, addPertoError);
+            const longe = validateAndFormatInput(addLongeInput, addLongeError);
+            const perto = validateAndFormatInput(addPertoInput, addPertoError);
 
             if (longe === null || perto === null) {
                 return; // Don't calculate if inputs are invalid
             }
 
-            const addition = longe + perto;
+            const addition = Math.abs(perto - longe);
             addResult.textContent = formatAddition(addition);
         }
 
@@ -723,21 +670,21 @@
             // Reset Addition calculator
             addLongeInput.value = '';
             addPertoInput.value = '';
-            addResult.textContent = 'ADD 0,00';
+            addResult.textContent = 'ADD +0,00';
             hideError(addLongeInput, addLongeError);
             hideError(addPertoInput, addPertoError);
 
             // Reset Near calculator
             nearLongeInput.value = '';
             nearAddInput.value = '';
-            nearResult.textContent = '0,00';
+            nearResult.textContent = '+0,00';
             hideError(nearLongeInput, nearLongeError);
             hideError(nearAddInput, nearAddError);
 
             // Reset Far calculator
             farPertoInput.value = '';
             farAddInput.value = '';
-            farResult.textContent = '0,00';
+            farResult.textContent = '+0,00';
             hideError(farPertoInput, farPertoError);
             hideError(farAddInput, farAddError);
         }
@@ -770,8 +717,7 @@
 
                 // If empty, hide error and return
                 if (!value || value.trim() === '') {
-                    if (error.textContent === 'Apenas números permitidos' ||
-                        error.textContent === 'Valor inválido, adição tem valor positivo') {
+                    if (error.textContent === 'Apenas números permitidos') {
                         hideError(input, error);
                         error.textContent = 'Valor inválido';
                     }
@@ -788,18 +734,6 @@
                     error.textContent = 'Valor inválido';
                 }
 
-                // Rule 1: Check for negative value in Adição inputs on input
-                if (input === addLongeInput || input === addPertoInput) {
-                    // Check if value contains a negative sign - immediately reject
-                    if (value.includes('-')) {
-                        error.textContent = 'Valor inválido, adição tem valor positivo';
-                        showError(input, error);
-                    } else if (error.textContent === 'Valor inválido, adição tem valor positivo') {
-                        // If no negative sign and error is the Adição error, hide it
-                        hideError(input, error);
-                        error.textContent = 'Valor inválido';
-                    }
-                }
             });
 
             // Allow Enter key to trigger calculations
@@ -816,6 +750,43 @@
                 }
             });
         });
+
+        // Function to toggle sign of input value
+        function toggleSign(input, toggleBtn, errorElement) {
+            const value = input.value.trim();
+
+            // If empty, do nothing
+            if (!value) {
+                return;
+            }
+
+            // Check if contains letters - don't toggle
+            if (containsLetters(value)) {
+                return;
+            }
+
+            // Parse the value
+            const num = parseInput(value);
+            if (num === null) {
+                return;
+            }
+
+            // Toggle the sign
+            const toggledNum = -num;
+
+            // Update the input value
+            input.value = formatNumber(toggledNum);
+
+            // Update the toggle button text
+            toggleBtn.textContent = toggledNum >= 0 ? '+' : '-';
+
+            // Hide any existing errors
+            hideError(input, errorElement);
+
+            // Trigger input event to update validation
+            input.dispatchEvent(new Event('input'));
+        }
+
     </script>
 </body>
 

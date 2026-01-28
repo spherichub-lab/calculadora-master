@@ -4,8 +4,8 @@
     "description": "Calculadora Master Simplificada - Optical Prescription Calculator",
     "main": "index.html",
     "scripts": {
-        "dev": "npx serve . -p 3000",
-        "start": "npx serve . -p 3000",
+        "dev": "npx serve public -p 3000",
+        "start": "npx serve public -p 3000",
         "build": "echo 'No build step needed for static HTML'"
     },
     "keywords": [
