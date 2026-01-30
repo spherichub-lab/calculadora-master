@@ -42,6 +42,190 @@
             font-size: 0.75rem;
             margin-top: 0.25rem;
         }
+
+        /* Custom Dropdown Styles */
+        .custom-dropdown {
+            position: relative;
+            width: 100%;
+            overflow: visible;
+        }
+
+        .dropdown-trigger {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+            color: #0f172a;
+        }
+
+        .dropdown-trigger:hover {
+            border-color: #f26b2b;
+            background: #fff7ed;
+        }
+
+        .dropdown-trigger:focus {
+            outline: none;
+            border-color: #f26b2b;
+            box-shadow: 0 0 0 3px rgba(242, 107, 43, 0.1);
+        }
+
+        .dropdown-trigger.dark {
+            background: #1e293b;
+            border-color: #334155;
+            color: #f1f5f9;
+        }
+
+        .dropdown-trigger.dark:hover {
+            border-color: #f26b2b;
+            background: #334155;
+        }
+
+        .dropdown-arrow {
+            transition: transform 0.2s;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .dropdown-trigger.open .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            margin-top: 0.25rem;
+        }
+
+        .dropdown-menu.open {
+            display: block;
+        }
+
+        .dropdown-menu.dark {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        .dropdown-section {
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .dropdown-menu.dark .dropdown-section {
+            border-bottom-color: #334155;
+        }
+
+        .dropdown-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-header {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #64748b;
+            background: #f1f5f9;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .dropdown-menu.dark .section-header {
+            background: #334155;
+            color: #94a3b8;
+        }
+
+        .dropdown-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .dropdown-option {
+            padding: 0.5rem 0.25rem;
+            cursor: pointer;
+            transition: background-color 0.15s;
+            text-align: center;
+            font-size: 0.8125rem;
+            border-radius: 0.25rem;
+            color: #0f172a;
+        }
+
+        .dropdown-option:hover {
+            background-color: #f26b2b;
+            color: white;
+        }
+
+        .dropdown-option.selected {
+            background-color: #f26b2b;
+            color: white;
+            font-weight: 500;
+        }
+
+        .dropdown-menu.dark .dropdown-option {
+            color: #f1f5f9;
+        }
+
+        /* Scrollbar styling */
+        .dropdown-menu::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .dropdown-menu::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+
+        .dropdown-menu::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .dropdown-menu::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .dropdown-menu.dark::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+
+        .dropdown-menu.dark::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+
+        .dropdown-menu.dark::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+
+        /* Ensure dropdown menus can overflow parent containers */
+        .calc-block {
+            overflow: visible !important;
+        }
+
+        .custom-dropdown .dropdown-menu {
+            /* Ensure dropdown menu extends beyond parent */
+            position: absolute;
+            width: 100%;
+            min-width: 200px;
+        }
     </style>
 </head>
 
@@ -90,53 +274,89 @@
                     </div>
                 </div>
                 <div class="p-6 flex flex-col gap-6 flex-1">
-                    <div>
-                        <h4 class="text-sm font-bold text-slate-900 dark:text-slate-200 mb-3 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-base text-primary">distance</span>
-                            Longe
-                        </h4>
-                        <div class="grid grid-cols-1 gap-3">
-                            <label class="flex flex-col">
-                                <span class="text-xs font-medium text-slate-500 mb-1.5 ml-1">Esférico</span>
-                                <input id="addLongeInput"
-                                    class="form-input w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:border-primary focus:ring-primary h-10"
-                                    placeholder="0,00" type="text" inputmode="decimal"
-                                    pattern="[-+]?[0-9]*[.,]?[0-9]+" />
-                                <div id="addLongeError" class="error-message text-red-500 text-xs mt-1 hidden">Valor
-                                    inválido</div>
-                            </label>
-                        </div>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-bold text-slate-900 dark:text-slate-200 mb-3 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-base text-primary">menu_book</span>
-                            Perto
-                        </h4>
-                        <div class="grid grid-cols-1 gap-3">
-                            <label class="flex flex-col">
-                                <span class="text-xs font-medium text-slate-500 mb-1.5 ml-1">Esférico</span>
-                                <input id="addPertoInput"
-                                    class="form-input w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:border-primary focus:ring-primary h-10"
-                                    placeholder="0,00" type="text" inputmode="decimal"
-                                    pattern="[-+]?[0-9]*[.,]?[0-9]+" />
-                                <div id="addPertoError" class="error-message text-red-500 text-xs mt-1 hidden">Valor
-                                    inválido</div>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="mt-auto pt-4">
-                        <button id="calcAddBtn"
-                            class="w-full bg-primary hover:bg-[#d9581f] text-white font-bold py-3 rounded-lg shadow-sm transition-colors flex items-center justify-center gap-2">
-                            <span class="material-symbols-outlined">calculate</span>
-                            Calcular Adição
-                        </button>
-                        <div
-                            class="mt-4 p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20 flex flex-col items-center justify-center text-center h-24">
-                            <span
-                                class="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-widest font-semibold mb-1">Resultado</span>
-                            <div id="addResult" class="text-3xl font-bold text-primary">
-                                ADD +0,00
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <h4
+                                class="text-sm font-bold text-slate-900 dark:text-slate-200 mb-3 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-base text-primary">distance</span>
+                                Longe
+                            </h4>
+                            <div class="grid grid-cols-1 gap-3">
+                                <label class="flex flex-col">
+                                    <span class="text-xs font-medium text-slate-500 mb-1.5 ml-1">Esférico</span>
+                                    <div class="custom-dropdown" data-dropdown-id="addLongeInput">
+                                        <button class="dropdown-trigger" type="button">
+                                            <span class="selected-value">0,00</span>
+                                            <span class="dropdown-arrow">▼</span>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <div class="dropdown-section">
+                                                <div class="section-header">NEGATIVOS</div>
+                                                <div class="dropdown-options" id="addLongeNegatives"></div>
+                                            </div>
+                                            <div class="dropdown-section">
+                                                <div class="section-header">ZERO</div>
+                                                <div class="dropdown-options" id="addLongeZero"></div>
+                                            </div>
+                                            <div class="dropdown-section">
+                                                <div class="section-header">POSITIVOS</div>
+                                                <div class="dropdown-options" id="addLongePositives"></div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="addLongeInput" value="0.00" />
+                                    </div>
+                                    <div id="addLongeError" class="error-message text-red-500 text-xs mt-1 hidden">Valor
+                                        inválido</div>
+                                </label>
                             </div>
+                        </div>
+                        <div>
+                            <h4
+                                class="text-sm font-bold text-slate-900 dark:text-slate-200 mb-3 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-base text-primary">menu_book</span>
+                                Perto
+                            </h4>
+                            <div class="grid grid-cols-1 gap-3">
+                                <label class="flex flex-col">
+                                    <span class="text-xs font-medium text-slate-500 mb-1.5 ml-1">Esférico</span>
+                                    <div class="custom-dropdown" data-dropdown-id="addPertoInput">
+                                        <button class="dropdown-trigger" type="button">
+                                            <span class="selected-value">0,00</span>
+                                            <span class="dropdown-arrow">▼</span>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <div class="dropdown-section">
+                                                <div class="section-header">NEGATIVOS</div>
+                                                <div class="dropdown-options" id="addPertoNegatives"></div>
+                                            </div>
+                                            <div class="dropdown-section">
+                                                <div class="section-header">ZERO</div>
+                                                <div class="dropdown-options" id="addPertoZero"></div>
+                                            </div>
+                                            <div class="dropdown-section">
+                                                <div class="section-header">POSITIVOS</div>
+                                                <div class="dropdown-options" id="addPertoPositives"></div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="addPertoInput" value="0.00" />
+                                    </div>
+                                    <div id="addPertoError" class="error-message text-red-500 text-xs mt-1 hidden">Valor
+                                        inválido</div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="calcAddBtn"
+                        class="w-full bg-primary hover:bg-[#d9581f] text-white font-bold py-3 rounded-lg shadow-sm transition-colors flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined">calculate</span>
+                        Calcular Adição
+                    </button>
+                    <div
+                        class="p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20 flex flex-col items-center justify-center text-center h-24">
+                        <span
+                            class="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-widest font-semibold mb-1">Resultado</span>
+                        <div id="addResult" class="text-3xl font-bold text-primary">
+                            ADD +0,00
                         </div>
                     </div>
                 </div>
@@ -153,54 +373,87 @@
                     </div>
                 </div>
                 <div class="p-6 flex flex-col gap-6 flex-1">
-                    <div>
-                        <h4 class="text-sm font-bold text-slate-900 dark:text-slate-200 mb-3 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-base text-primary">distance</span>
-                            Longe
-                        </h4>
-                        <div class="grid grid-cols-1 gap-3">
-                            <label class="flex flex-col">
-                                <span class="text-xs font-medium text-slate-500 mb-1.5 ml-1">Esférico</span>
-                                <input id="nearLongeInput"
-                                    class="form-input w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:border-primary focus:ring-primary h-10"
-                                    placeholder="0,00" type="text" inputmode="decimal"
-                                    pattern="[-+]?[0-9]*[.,]?[0-9]+" />
-                                <div id="nearLongeError" class="error-message text-red-500 text-xs mt-1 hidden">Valor
-                                    inválido</div>
-                            </label>
-                        </div>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-bold text-slate-900 dark:text-slate-200 mb-3 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-base text-primary">add_circle</span>
-                            Adição
-                        </h4>
-                        <div class="grid grid-cols-1">
-                            <label class="flex flex-col">
-                                <span class="text-xs font-medium text-slate-500 mb-1.5 ml-1">Valor da Adição</span>
-                                <input id="nearAddInput"
-                                    class="form-input w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:border-primary focus:ring-primary h-10"
-                                    placeholder="0,00" type="text" inputmode="decimal"
-                                    pattern="[-+]?[0-9]*[.,]?[0-9]+" />
-                                <div id="nearAddError" class="error-message text-red-500 text-xs mt-1 hidden">Valor
-                                    inválido</div>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="mt-auto pt-4">
-                        <button id="calcNearBtn"
-                            class="w-full bg-primary hover:bg-[#d9581f] text-white font-bold py-3 rounded-lg shadow-sm transition-colors flex items-center justify-center gap-2">
-                            <span class="material-symbols-outlined">calculate</span>
-                            Calcular Perto
-                        </button>
-                        <div
-                            class="mt-4 p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20 flex flex-col items-center justify-center text-center h-24">
-                            <span
-                                class="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-widest font-semibold mb-1">Resultado
-                                (Rx Perto)</span>
-                            <div id="nearResult" class="text-3xl font-bold text-primary">
-                                +0,00
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <h4
+                                class="text-sm font-bold text-slate-900 dark:text-slate-200 mb-3 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-base text-primary">distance</span>
+                                Longe
+                            </h4>
+                            <div class="grid grid-cols-1 gap-3">
+                                <label class="flex flex-col">
+                                    <span class="text-xs font-medium text-slate-500 mb-1.5 ml-1">Esférico</span>
+                                    <div class="custom-dropdown" data-dropdown-id="nearLongeInput">
+                                        <button class="dropdown-trigger" type="button">
+                                            <span class="selected-value">0,00</span>
+                                            <span class="dropdown-arrow">▼</span>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <div class="dropdown-section">
+                                                <div class="section-header">NEGATIVOS</div>
+                                                <div class="dropdown-options" id="nearLongeNegatives"></div>
+                                            </div>
+                                            <div class="dropdown-section">
+                                                <div class="section-header">ZERO</div>
+                                                <div class="dropdown-options" id="nearLongeZero"></div>
+                                            </div>
+                                            <div class="dropdown-section">
+                                                <div class="section-header">POSITIVOS</div>
+                                                <div class="dropdown-options" id="nearLongePositives"></div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="nearLongeInput" value="0.00" />
+                                    </div>
+                                    <div id="nearLongeError" class="error-message text-red-500 text-xs mt-1 hidden">
+                                        Valor
+                                        inválido</div>
+                                </label>
                             </div>
+                        </div>
+                        <div>
+                            <h4
+                                class="text-sm font-bold text-slate-900 dark:text-slate-200 mb-3 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-base text-primary">add_circle</span>
+                                Adição
+                            </h4>
+                            <div class="grid grid-cols-1">
+                                <label class="flex flex-col">
+                                    <span class="text-xs font-medium text-slate-500 mb-1.5 ml-1">Valor da Adição</span>
+                                    <div class="custom-dropdown" data-dropdown-id="nearAddInput">
+                                        <button class="dropdown-trigger" type="button">
+                                            <span class="selected-value">0,00</span>
+                                            <span class="dropdown-arrow">▼</span>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <div class="dropdown-section">
+                                                <div class="section-header">ZERO</div>
+                                                <div class="dropdown-options" id="nearAddZero"></div>
+                                            </div>
+                                            <div class="dropdown-section">
+                                                <div class="section-header">POSITIVOS</div>
+                                                <div class="dropdown-options" id="nearAddPositives"></div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="nearAddInput" value="0.00" />
+                                    </div>
+                                    <div id="nearAddError" class="error-message text-red-500 text-xs mt-1 hidden">Valor
+                                        inválido</div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="calcNearBtn"
+                        class="w-full bg-primary hover:bg-[#d9581f] text-white font-bold py-3 rounded-lg shadow-sm transition-colors flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined">calculate</span>
+                        Calcular Perto
+                    </button>
+                    <div
+                        class="p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20 flex flex-col items-center justify-center text-center h-24">
+                        <span
+                            class="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-widest font-semibold mb-1">Resultado
+                            (Rx Perto)</span>
+                        <div id="nearResult" class="text-3xl font-bold text-primary">
+                            +0,00
                         </div>
                     </div>
                 </div>
@@ -217,54 +470,86 @@
                     </div>
                 </div>
                 <div class="p-6 flex flex-col gap-6 flex-1">
-                    <div>
-                        <h4 class="text-sm font-bold text-slate-900 dark:text-slate-200 mb-3 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-base text-primary">menu_book</span>
-                            Perto
-                        </h4>
-                        <div class="grid grid-cols-1 gap-3">
-                            <label class="flex flex-col">
-                                <span class="text-xs font-medium text-slate-500 mb-1.5 ml-1">Esférico</span>
-                                <input id="farPertoInput"
-                                    class="form-input w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:border-primary focus:ring-primary h-10"
-                                    placeholder="0,00" type="text" inputmode="decimal"
-                                    pattern="[-+]?[0-9]*[.,]?[0-9]+" />
-                                <div id="farPertoError" class="error-message text-red-500 text-xs mt-1 hidden">Valor
-                                    inválido</div>
-                            </label>
-                        </div>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-bold text-slate-900 dark:text-slate-200 mb-3 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-base text-primary">add_circle</span>
-                            Adição
-                        </h4>
-                        <div class="grid grid-cols-1">
-                            <label class="flex flex-col">
-                                <span class="text-xs font-medium text-slate-500 mb-1.5 ml-1">Valor da Adição</span>
-                                <input id="farAddInput"
-                                    class="form-input w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:border-primary focus:ring-primary h-10"
-                                    placeholder="0,00" type="text" inputmode="decimal"
-                                    pattern="[-+]?[0-9]*[.,]?[0-9]+" />
-                                <div id="farAddError" class="error-message text-red-500 text-xs mt-1 hidden">Valor
-                                    inválido</div>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="mt-auto pt-4">
-                        <button id="calcFarBtn"
-                            class="w-full bg-primary hover:bg-[#d9581f] text-white font-bold py-3 rounded-lg shadow-sm transition-colors flex items-center justify-center gap-2">
-                            <span class="material-symbols-outlined">calculate</span>
-                            Calcular Longe
-                        </button>
-                        <div
-                            class="mt-4 p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20 flex flex-col items-center justify-center text-center h-24">
-                            <span
-                                class="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-widest font-semibold mb-1">Resultado
-                                (Rx Longe)</span>
-                            <div id="farResult" class="text-3xl font-bold text-primary">
-                                +0,00
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <h4
+                                class="text-sm font-bold text-slate-900 dark:text-slate-200 mb-3 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-base text-primary">menu_book</span>
+                                Perto
+                            </h4>
+                            <div class="grid grid-cols-1 gap-3">
+                                <label class="flex flex-col">
+                                    <span class="text-xs font-medium text-slate-500 mb-1.5 ml-1">Esférico</span>
+                                    <div class="custom-dropdown" data-dropdown-id="farPertoInput">
+                                        <button class="dropdown-trigger" type="button">
+                                            <span class="selected-value">0,00</span>
+                                            <span class="dropdown-arrow">▼</span>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <div class="dropdown-section">
+                                                <div class="section-header">NEGATIVOS</div>
+                                                <div class="dropdown-options" id="farPertoNegatives"></div>
+                                            </div>
+                                            <div class="dropdown-section">
+                                                <div class="section-header">ZERO</div>
+                                                <div class="dropdown-options" id="farPertoZero"></div>
+                                            </div>
+                                            <div class="dropdown-section">
+                                                <div class="section-header">POSITIVOS</div>
+                                                <div class="dropdown-options" id="farPertoPositives"></div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="farPertoInput" value="0.00" />
+                                    </div>
+                                    <div id="farPertoError" class="error-message text-red-500 text-xs mt-1 hidden">Valor
+                                        inválido</div>
+                                </label>
                             </div>
+                        </div>
+                        <div>
+                            <h4
+                                class="text-sm font-bold text-slate-900 dark:text-slate-200 mb-3 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-base text-primary">add_circle</span>
+                                Adição
+                            </h4>
+                            <div class="grid grid-cols-1">
+                                <label class="flex flex-col">
+                                    <span class="text-xs font-medium text-slate-500 mb-1.5 ml-1">Valor da Adição</span>
+                                    <div class="custom-dropdown" data-dropdown-id="farAddInput">
+                                        <button class="dropdown-trigger" type="button">
+                                            <span class="selected-value">0,00</span>
+                                            <span class="dropdown-arrow">▼</span>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <div class="dropdown-section">
+                                                <div class="section-header">ZERO</div>
+                                                <div class="dropdown-options" id="farAddZero"></div>
+                                            </div>
+                                            <div class="dropdown-section">
+                                                <div class="section-header">POSITIVOS</div>
+                                                <div class="dropdown-options" id="farAddPositives"></div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="farAddInput" value="0.00" />
+                                    </div>
+                                    <div id="farAddError" class="error-message text-red-500 text-xs mt-1 hidden">Valor
+                                        inválido</div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="calcFarBtn"
+                        class="w-full bg-primary hover:bg-[#d9581f] text-white font-bold py-3 rounded-lg shadow-sm transition-colors flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined">calculate</span>
+                        Calcular Longe
+                    </button>
+                    <div
+                        class="p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20 flex flex-col items-center justify-center text-center h-24">
+                        <span
+                            class="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-widest font-semibold mb-1">Resultado
+                            (Rx Longe)</span>
+                        <div id="farResult" class="text-3xl font-bold text-primary">
+                            +0,00
                         </div>
                     </div>
                 </div>
@@ -435,6 +720,207 @@
     </footer>
 
     <script>
+        // Custom Dropdown Functions
+        function generateDropdownOptions(isAddition = false) {
+            const options = {
+                negatives: [],
+                zero: [{ value: '0.00', display: '0,00' }],
+                positives: []
+            };
+
+            // For "Adição" dropdown, only show positive numbers from 0.00 to +6.00
+            if (isAddition) {
+                options.zero = []; // No separate zero section for addition
+                for (let i = 0; i <= 6; i += 0.25) {
+                    options.positives.push({
+                        value: i.toFixed(2),
+                        display: formatDropdownNumber(i)
+                    });
+                }
+            } else {
+                // For other dropdowns, show full range from -25.00 to +25.00
+                for (let i = -25; i < 0; i += 0.25) {
+                    options.negatives.push({
+                        value: i.toFixed(2),
+                        display: formatDropdownNumber(i)
+                    });
+                }
+
+                for (let i = 0.25; i <= 25; i += 0.25) {
+                    options.positives.push({
+                        value: i.toFixed(2),
+                        display: formatDropdownNumber(i)
+                    });
+                }
+            }
+
+            return options;
+        }
+
+        function formatDropdownNumber(num) {
+            const formatted = num.toFixed(2).replace('.', ',');
+            return num >= 0 ? `+${formatted}` : formatted;
+        }
+
+        function initDropdown(dropdownId, isAddition = false) {
+            const dropdown = document.querySelector(`[data-dropdown-id="${dropdownId}"]`);
+            if (!dropdown) return;
+
+            const trigger = dropdown.querySelector('.dropdown-trigger');
+            const menu = dropdown.querySelector('.dropdown-menu');
+            const selectedValueSpan = dropdown.querySelector('.selected-value');
+            const hiddenInput = dropdown.querySelector('input[type="hidden"]');
+
+            // Generate options
+            const options = generateDropdownOptions(isAddition);
+
+            // Remove 'Input' suffix from dropdownId to match container IDs
+            const containerIdPrefix = dropdownId.replace('Input', '');
+
+            // Populate negative options using specific ID
+            const negativeContainer = document.getElementById(`${containerIdPrefix}Negatives`);
+            if (negativeContainer) {
+                options.negatives.forEach(opt => {
+                    const option = document.createElement('div');
+                    option.className = 'dropdown-option';
+                    option.textContent = opt.display;
+                    option.dataset.value = opt.value;
+                    option.addEventListener('click', () => selectOption(dropdown, opt));
+                    negativeContainer.appendChild(option);
+                });
+
+                // Hide negative section if no options (for addition dropdown)
+                if (options.negatives.length === 0) {
+                    const negativeSection = dropdown.querySelector('.dropdown-section:nth-child(1)');
+                    if (negativeSection) {
+                        negativeSection.style.display = 'none';
+                    }
+                }
+            }
+
+            // Populate zero options using specific ID
+            const zeroContainer = document.getElementById(`${containerIdPrefix}Zero`);
+            if (zeroContainer) {
+                options.zero.forEach(opt => {
+                    const option = document.createElement('div');
+                    option.className = 'dropdown-option selected';
+                    option.textContent = opt.display;
+                    option.dataset.value = opt.value;
+                    option.addEventListener('click', () => selectOption(dropdown, opt));
+                    zeroContainer.appendChild(option);
+                });
+            }
+
+            // Populate positive options using specific ID
+            const positiveContainer = document.getElementById(`${containerIdPrefix}Positives`);
+            if (positiveContainer) {
+                options.positives.forEach(opt => {
+                    const option = document.createElement('div');
+                    option.className = 'dropdown-option';
+                    option.textContent = opt.display;
+                    option.dataset.value = opt.value;
+                    option.addEventListener('click', () => selectOption(dropdown, opt));
+                    positiveContainer.appendChild(option);
+                });
+            }
+
+            // Toggle dropdown
+            trigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                menu.classList.toggle('open');
+                trigger.classList.toggle('open');
+                if (menu.classList.contains('open')) {
+                    // Scroll to zero option to center it in the middle
+                    const zeroOption = menu.querySelector('.dropdown-option[data-value="0.00"]');
+                    if (zeroOption) {
+                        const menuHeight = menu.clientHeight;
+                        const zeroOffset = zeroOption.offsetTop;
+                        menu.scrollTop = zeroOffset - (menuHeight / 2) + (zeroOption.clientHeight / 2);
+                    }
+                }
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!dropdown.contains(e.target)) {
+                    menu.classList.remove('open');
+                    trigger.classList.remove('open');
+                }
+            });
+
+            // Select default value
+            if (options.zero.length > 0) {
+                selectOption(dropdown, options.zero[0]);
+            } else if (options.positives.length > 0) {
+                // For addition dropdown, select the first positive (0.00)
+                selectOption(dropdown, options.positives[0]);
+            }
+        }
+
+        function selectOption(dropdown, option) {
+            const selectedValueSpan = dropdown.querySelector('.selected-value');
+            const hiddenInput = dropdown.querySelector('input[type="hidden"]');
+            const menu = dropdown.querySelector('.dropdown-menu');
+            const trigger = dropdown.querySelector('.dropdown-trigger');
+
+            // Update selected value display
+            selectedValueSpan.textContent = option.display;
+
+            // Update hidden input
+            hiddenInput.value = option.value;
+
+            // Update selected class
+            dropdown.querySelectorAll('.dropdown-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            const selectedOption = dropdown.querySelector(`.dropdown-option[data-value="${option.value}"]`);
+            if (selectedOption) {
+                selectedOption.classList.add('selected');
+            }
+
+            // Trigger change event
+            hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+
+        function resetDropdown(dropdownId) {
+            const dropdown = document.querySelector(`[data-dropdown-id="${dropdownId}"]`);
+            if (!dropdown) return;
+
+            const selectedValueSpan = dropdown.querySelector('.selected-value');
+            const hiddenInput = dropdown.querySelector('input[type="hidden"]');
+
+            // Reset to default value (0,00)
+            selectedValueSpan.textContent = '0,00';
+            hiddenInput.value = '0.00';
+
+            // Update selected class
+            dropdown.querySelectorAll('.dropdown-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            const selectedOption = dropdown.querySelector(`.dropdown-option[data-value="0.00"]`);
+            if (selectedOption) {
+                selectedOption.classList.add('selected');
+            }
+
+            // Trigger change event
+            hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+
+        // Initialize dropdowns when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            // Cálculo de Adição block (both inputs have full range -25.00 to +25.00)
+            initDropdown('addLongeInput', false);  // Longe: full range
+            initDropdown('addPertoInput', false);  // Perto: full range
+
+            // Cálculo de Perto block (Longe: full range, Adição: positive only 0.00 to +6.00)
+            initDropdown('nearLongeInput', false);  // Longe: full range
+            initDropdown('nearAddInput', true);   // Adição: positive only (0.00 to +6.00)
+
+            // Cálculo de Longe block (Perto: full range, Adição: positive only 0.00 to +6.00)
+            initDropdown('farPertoInput', false);  // Perto: full range
+            initDropdown('farAddInput', true);    // Adição: positive only (0.00 to +6.00)
+        });
+
         // Get DOM elements
         const addLongeInput = document.getElementById('addLongeInput');
         const addPertoInput = document.getElementById('addPertoInput');
@@ -632,10 +1118,10 @@
 
         // Calculate Addition: Perto - Longe = Adição
         function calculateAddition() {
-            const longe = validateAndFormatInput(addLongeInput, addLongeError);
-            const perto = validateAndFormatInput(addPertoInput, addPertoError);
+            const longe = parseFloat(addLongeInput.value);
+            const perto = parseFloat(addPertoInput.value);
 
-            if (longe === null || perto === null) {
+            if (isNaN(longe) || isNaN(perto)) {
                 return; // Don't calculate if inputs are invalid
             }
 
@@ -645,10 +1131,10 @@
 
         // Calculate Near: Longe + Adição = Perto
         function calculateNear() {
-            const longe = validateAndFormatInput(nearLongeInput, nearLongeError);
-            const addition = validateAndFormatInput(nearAddInput, nearAddError);
+            const longe = parseFloat(nearLongeInput.value);
+            const addition = parseFloat(nearAddInput.value);
 
-            if (longe === null || addition === null) {
+            if (isNaN(longe) || isNaN(addition)) {
                 return; // Don't calculate if inputs are invalid
             }
 
@@ -659,10 +1145,10 @@
 
         // Calculate Far: Perto - Adição = Longe
         function calculateFar() {
-            const perto = validateAndFormatInput(farPertoInput, farPertoError);
-            const addition = validateAndFormatInput(farAddInput, farAddError);
+            const perto = parseFloat(farPertoInput.value);
+            const addition = parseFloat(farAddInput.value);
 
-            if (perto === null || addition === null) {
+            if (isNaN(perto) || isNaN(addition)) {
                 return; // Don't calculate if inputs are invalid
             }
 
@@ -674,22 +1160,22 @@
         // Reset all inputs and results
         function resetAll() {
             // Reset Addition calculator
-            addLongeInput.value = '';
-            addPertoInput.value = '';
+            resetDropdown('addLongeInput');
+            resetDropdown('addPertoInput');
             addResult.textContent = 'ADD +0,00';
             hideError(addLongeInput, addLongeError);
             hideError(addPertoInput, addPertoError);
 
             // Reset Near calculator
-            nearLongeInput.value = '';
-            nearAddInput.value = '';
+            resetDropdown('nearLongeInput');
+            resetDropdown('nearAddInput');
             nearResult.textContent = '+0,00';
             hideError(nearLongeInput, nearLongeError);
             hideError(nearAddInput, nearAddError);
 
             // Reset Far calculator
-            farPertoInput.value = '';
-            farAddInput.value = '';
+            resetDropdown('farPertoInput');
+            resetDropdown('farAddInput');
             farResult.textContent = '+0,00';
             hideError(farPertoInput, farPertoError);
             hideError(farAddInput, farAddError);
@@ -703,12 +1189,8 @@
 
         // Add input validation listeners for real-time validation
         const allInputs = [
-            { input: addLongeInput, error: addLongeError },
-            { input: addPertoInput, error: addPertoError },
             { input: nearLongeInput, error: nearLongeError },
-            { input: nearAddInput, error: nearAddError },
-            { input: farPertoInput, error: farPertoError },
-            { input: farAddInput, error: farAddError }
+            { input: farPertoInput, error: farPertoError }
         ];
 
         allInputs.forEach(({ input, error }) => {
